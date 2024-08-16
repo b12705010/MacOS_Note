@@ -7,21 +7,27 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3522F2402C6D1F5A0024EFA2 /* MacOS_NoteApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3522F23F2C6D1F5A0024EFA2 /* MacOS_NoteApp.swift */; };
-		3522F2422C6D1F5A0024EFA2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3522F2412C6D1F5A0024EFA2 /* ContentView.swift */; };
-		3522F2442C6D1F5A0024EFA2 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3522F2432C6D1F5A0024EFA2 /* Item.swift */; };
 		3522F2462C6D1F5A0024EFA2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3522F2452C6D1F5A0024EFA2 /* Assets.xcassets */; };
 		3522F24A2C6D1F5A0024EFA2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3522F2492C6D1F5A0024EFA2 /* Preview Assets.xcassets */; };
+		3522F2512C6D1FE60024EFA2 /* MyNotesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3522F2502C6D1FE60024EFA2 /* MyNotesApp.swift */; };
+		3522F2532C6D201B0024EFA2 /* NotesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3522F2522C6D201B0024EFA2 /* NotesListView.swift */; };
+		3522F2552C6D20310024EFA2 /* NoteDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3522F2542C6D20310024EFA2 /* NoteDetailView.swift */; };
+		3522F2572C6D20440024EFA2 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3522F2562C6D20440024EFA2 /* Note.swift */; };
+		3522F2592C6D20580024EFA2 /* NotesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3522F2582C6D20580024EFA2 /* NotesViewModel.swift */; };
+		9236143F2C6F3F3B00D53C15 /* RichTextEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9236143E2C6F3F3B00D53C15 /* RichTextEditor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		3522F23C2C6D1F5A0024EFA2 /* MacOS_Note.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MacOS_Note.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		3522F23F2C6D1F5A0024EFA2 /* MacOS_NoteApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacOS_NoteApp.swift; sourceTree = "<group>"; };
-		3522F2412C6D1F5A0024EFA2 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		3522F2432C6D1F5A0024EFA2 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		3522F2452C6D1F5A0024EFA2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3522F2472C6D1F5A0024EFA2 /* MacOS_Note.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MacOS_Note.entitlements; sourceTree = "<group>"; };
 		3522F2492C6D1F5A0024EFA2 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		3522F2502C6D1FE60024EFA2 /* MyNotesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyNotesApp.swift; sourceTree = "<group>"; };
+		3522F2522C6D201B0024EFA2 /* NotesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesListView.swift; sourceTree = "<group>"; };
+		3522F2542C6D20310024EFA2 /* NoteDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetailView.swift; sourceTree = "<group>"; };
+		3522F2562C6D20440024EFA2 /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
+		3522F2582C6D20580024EFA2 /* NotesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesViewModel.swift; sourceTree = "<group>"; };
+		9236143E2C6F3F3B00D53C15 /* RichTextEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RichTextEditor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,9 +60,12 @@
 		3522F23E2C6D1F5A0024EFA2 /* MacOS_Note */ = {
 			isa = PBXGroup;
 			children = (
-				3522F23F2C6D1F5A0024EFA2 /* MacOS_NoteApp.swift */,
-				3522F2412C6D1F5A0024EFA2 /* ContentView.swift */,
-				3522F2432C6D1F5A0024EFA2 /* Item.swift */,
+				3522F2502C6D1FE60024EFA2 /* MyNotesApp.swift */,
+				3522F2522C6D201B0024EFA2 /* NotesListView.swift */,
+				3522F2542C6D20310024EFA2 /* NoteDetailView.swift */,
+				9236143E2C6F3F3B00D53C15 /* RichTextEditor.swift */,
+				3522F2562C6D20440024EFA2 /* Note.swift */,
+				3522F2582C6D20580024EFA2 /* NotesViewModel.swift */,
 				3522F2452C6D1F5A0024EFA2 /* Assets.xcassets */,
 				3522F2472C6D1F5A0024EFA2 /* MacOS_Note.entitlements */,
 				3522F2482C6D1F5A0024EFA2 /* Preview Content */,
@@ -142,9 +151,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3522F2422C6D1F5A0024EFA2 /* ContentView.swift in Sources */,
-				3522F2442C6D1F5A0024EFA2 /* Item.swift in Sources */,
-				3522F2402C6D1F5A0024EFA2 /* MacOS_NoteApp.swift in Sources */,
+				3522F2552C6D20310024EFA2 /* NoteDetailView.swift in Sources */,
+				3522F2592C6D20580024EFA2 /* NotesViewModel.swift in Sources */,
+				3522F2532C6D201B0024EFA2 /* NotesListView.swift in Sources */,
+				9236143F2C6F3F3B00D53C15 /* RichTextEditor.swift in Sources */,
+				3522F2512C6D1FE60024EFA2 /* MyNotesApp.swift in Sources */,
+				3522F2572C6D20440024EFA2 /* Note.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -274,7 +286,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MacOS_Note/Preview Content\"";
-				DEVELOPMENT_TEAM = T8FH65Y48B;
+				DEVELOPMENT_TEAM = DWU7Q7F2SB;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -312,7 +324,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MacOS_Note/Preview Content\"";
-				DEVELOPMENT_TEAM = T8FH65Y48B;
+				DEVELOPMENT_TEAM = DWU7Q7F2SB;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
