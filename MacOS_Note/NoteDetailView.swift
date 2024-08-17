@@ -4,7 +4,6 @@
 //
 //  Created by 賴柏澔 on 2024/8/15.
 //
-
 import SwiftUI
 import AppKit
 
@@ -15,11 +14,22 @@ struct NoteDetailView: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
-                Button(action: insertTable) {
-                    Image(systemName: "tablecells")
-                    Text("Insert Table")
+                Button(action: applyTitle) {
+                    Text("Title")
                 }
                 
+                Button(action: applyHeading) {
+                    Text("Heading")
+                }
+                
+                Button(action: applySubtitle) {
+                    Text("Subtitle")
+                }
+
+                Button(action: applyBody) {
+                    Text("Body")
+                }
+
                 Button(action: applyBold) {
                     Image(systemName: "bold")
                     Text("Bold")
@@ -30,14 +40,12 @@ struct NoteDetailView: View {
                     Text("Italic")
                 }
                 
-                // 新增 Save 按鈕
                 Button(action: saveNote) {
                     Image(systemName: "square.and.arrow.down")
                     Text("Save")
                 }
             }
             .padding()
-            .background(Color.clear)
 
             Divider()
 
@@ -48,71 +56,94 @@ struct NoteDetailView: View {
         .navigationTitle(note.title)
     }
 
-    func insertTable() {
-        print("Insert Table pressed")
+    // Title 樣式
+    func applyTitle() {
+        applyFontStyle(size: 28, weight: .bold)
     }
+
+    // Heading 樣式
+    func applyHeading() {
+        applyFontStyle(size: 22, weight: .semibold)
+    }
+
+    // Subtitle 樣式
+    func applySubtitle() {
+        applyFontStyle(size: 18, weight: .medium)
+    }
+
+    // Body 樣式
+    func applyBody() {
+        applyFontStyle(size: 14, weight: .regular)
+    }
+
+    // 應用字體樣式
+    func applyFontStyle(size: CGFloat, weight: NSFont.Weight) {
+        if let textView = firstResponderTextView() {
+            let selectedRange = textView.selectedRange()
+            if selectedRange.length > 0, let textStorage = textView.textStorage {
+                let attributedString = textStorage.attributedSubstring(from: selectedRange).mutableCopy() as! NSMutableAttributedString
+
+                attributedString.enumerateAttribute(.font, in: NSRange(location: 0, length: attributedString.length), options: []) { value, range, _ in
+                    if let font = value as? NSFont {
+                        let newFontDescriptor = font.fontDescriptor
+                        if let newFont = NSFont(descriptor: newFontDescriptor, size: size) {
+                            let fontWithWeight = NSFont.systemFont(ofSize: size, weight: weight)
+                            attributedString.addAttribute(.font, value: fontWithWeight, range: range)
+                        }
+                    }
+                }
+
+                textStorage.replaceCharacters(in: selectedRange, with: attributedString)
+            }
+        }
+    }
+
 
     func applyBold() {
-        // 印出原始的 note.content
-        print("Before applying bold: \(note.content.string)")
-
-        if let mutableText = note.content.mutableCopy() as? NSMutableAttributedString {
-            let selectedRange = NSRange(location: 0, length: mutableText.length)
-            mutableText.enumerateAttribute(.font, in: selectedRange, options: []) { value, range, _ in
-                if let currentFont = value as? NSFont {
-                    var fontDescriptor = currentFont.fontDescriptor
-                    if fontDescriptor.symbolicTraits.contains(.bold) {
-                        fontDescriptor = fontDescriptor.withSymbolicTraits(fontDescriptor.symbolicTraits.subtracting(.bold))
-                    } else {
-                        fontDescriptor = fontDescriptor.withSymbolicTraits(fontDescriptor.symbolicTraits.union(.bold))
-                    }
-                    if let updatedFont = NSFont(descriptor: fontDescriptor, size: currentFont.pointSize) {
-                        mutableText.addAttribute(.font, value: updatedFont, range: range)
-                    }
-                }
-            }
-
-            // 更新 note.content 並印出變更後的內容
-            note.content = mutableText
-            print("After applying bold: \(note.content.string)")
-        }
+        applyFontTrait(.bold)
     }
-
 
     func applyItalic() {
-        // 印出原始的 note.content
-        print("Before applying italic: \(note.content.string)")
-        
-        if let mutableText = note.content.mutableCopy() as? NSMutableAttributedString {
-            let selectedRange = NSRange(location: 0, length: mutableText.length)
-            mutableText.enumerateAttribute(.font, in: selectedRange, options: []) { value, range, _ in
-                if let currentFont = value as? NSFont {
-                    var fontDescriptor = currentFont.fontDescriptor
-                    if fontDescriptor.symbolicTraits.contains(.italic) {
-                        fontDescriptor = fontDescriptor.withSymbolicTraits(fontDescriptor.symbolicTraits.subtracting(.italic))
-                    } else {
-                        fontDescriptor = fontDescriptor.withSymbolicTraits(fontDescriptor.symbolicTraits.union(.italic))
-                    }
-                    if let updatedFont = NSFont(descriptor: fontDescriptor, size: currentFont.pointSize) {
-                        mutableText.addAttribute(.font, value: updatedFont, range: range)
+        applyFontTrait(.italic)
+    }
+
+    // 應用字體屬性（如粗體、斜體）
+    func applyFontTrait(_ trait: NSFontDescriptor.SymbolicTraits) {
+        if let textView = firstResponderTextView() {
+            let selectedRange = textView.selectedRange()
+            if selectedRange.length > 0, let textStorage = textView.textStorage {
+                let attributedString = textStorage.attributedSubstring(from: selectedRange).mutableCopy() as! NSMutableAttributedString
+
+                attributedString.enumerateAttribute(.font, in: NSRange(location: 0, length: attributedString.length), options: []) { value, range, _ in
+                    if let font = value as? NSFont {
+                        var traits = font.fontDescriptor.symbolicTraits
+                        traits.insert(trait)
+                        let newFontDescriptor = font.fontDescriptor.withSymbolicTraits(traits)
+                        if let newFont = NSFont(descriptor: newFontDescriptor, size: font.pointSize) {
+                            attributedString.addAttribute(.font, value: newFont, range: range)
+                        }
                     }
                 }
+
+                textStorage.replaceCharacters(in: selectedRange, with: attributedString)
             }
-            note.content = mutableText
-            print("After applying italic: \(note.content.string)")
         }
     }
 
-    // 儲存筆記的內容
     func saveNote() {
-        // 印出原始的 note.content
-        print("Before applying saved: \(note.content.string)")
-        
-        if let index = viewModel.notes.firstIndex(where: { $0.id == note.id }) {
-            viewModel.notes[index].content = note.content  // 更新 ViewModel 中對應的筆記
-            viewModel.saveNotes()  // 儲存到 UserDefaults
+        if let textView = firstResponderTextView() {
+            let savedAttributedString = textView.attributedString()
+            
+            // 將格式化好的文本保存到 Note 中
+            if let index = viewModel.notes.firstIndex(where: { $0.id == note.id }) {
+                viewModel.notes[index].content = savedAttributedString
+                viewModel.saveNotes()
+            }
+            print("Note saved!")
         }
-        print("After applying saved: \(note.content.string)")
-        print("Note saved!")
+    }
+
+    func firstResponderTextView() -> NSTextView? {
+        return NSApp.keyWindow?.firstResponder as? NSTextView
     }
 }
