@@ -92,11 +92,17 @@ struct NoteDetailView: View {
 
                 attributedString.enumerateAttribute(.font, in: NSRange(location: 0, length: attributedString.length), options: []) { value, range, _ in
                     if let font = value as? NSFont {
-                        let newFontDescriptor = font.fontDescriptor
-                        if let newFont = NSFont(descriptor: newFontDescriptor, size: size) {
-                            let fontWithWeight = NSFont.systemFont(ofSize: size, weight: weight)
-                            attributedString.addAttribute(.font, value: fontWithWeight, range: range)
-                        }
+                        var fontDescriptor = font.fontDescriptor
+                        
+                        // 保留現有的符號屬性 (如粗體和斜體)
+                        let existingTraits = fontDescriptor.symbolicTraits
+                        
+                        // 使用新的大小和權重創建字體
+                        var newFontDescriptor = NSFontDescriptor(name: font.fontName, size: size)
+                        newFontDescriptor = newFontDescriptor.withSymbolicTraits(existingTraits)
+                        
+                        let newFont = NSFont(descriptor: newFontDescriptor, size: size)
+                        attributedString.addAttribute(.font, value: newFont!, range: range)
                     }
                 }
 
@@ -104,6 +110,7 @@ struct NoteDetailView: View {
             }
         }
     }
+
 
 
     func applyBold() {
@@ -115,6 +122,7 @@ struct NoteDetailView: View {
     }
 
     // 應用字體屬性（如粗體、斜體）
+    // 應用或移除字體屬性（如粗體、斜體）
     func applyFontTrait(_ trait: NSFontDescriptor.SymbolicTraits) {
         if let textView = firstResponderTextView() {
             let selectedRange = textView.selectedRange()
@@ -124,11 +132,18 @@ struct NoteDetailView: View {
                 attributedString.enumerateAttribute(.font, in: NSRange(location: 0, length: attributedString.length), options: []) { value, range, _ in
                     if let font = value as? NSFont {
                         var traits = font.fontDescriptor.symbolicTraits
-                        traits.insert(trait)
-                        let newFontDescriptor = font.fontDescriptor.withSymbolicTraits(traits)
-                        if let newFont = NSFont(descriptor: newFontDescriptor, size: font.pointSize) {
-                            attributedString.addAttribute(.font, value: newFont, range: range)
+
+                        // 切換字體屬性，如果已存在則移除，否則添加
+                        if traits.contains(trait) {
+                            traits.remove(trait)
+                        } else {
+                            traits.insert(trait)
                         }
+
+                        let newFontDescriptor = font.fontDescriptor.withSymbolicTraits(traits)
+                        let newFont = NSFont(descriptor: newFontDescriptor, size: font.pointSize)
+
+                        attributedString.addAttribute(.font, value: newFont, range: range)
                     }
                 }
 
@@ -136,6 +151,8 @@ struct NoteDetailView: View {
             }
         }
     }
+
+
 
     func saveNote() {
         if let textView = firstResponderTextView() {
