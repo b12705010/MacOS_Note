@@ -12,49 +12,56 @@ struct NoteDetailView: View {
     @ObservedObject var viewModel: NotesViewModel
 
     var body: some View {
-        VStack(alignment: .leading) {
-            HStack {
-                Button(action: applyTitle) {
-                    Text("Title")
+            VStack(alignment: .leading) {
+                HStack {
+                    Button(action: applyTitle) {
+                        Text("Title")
+                    }
+                    Button(action: applyHeading) {
+                        Text("Heading")
+                    }
+                    Button(action: applySubtitle) {
+                        Text("Subtitle")
+                    }
+                    Button(action: applyBody) {
+                        Text("Body")
+                    }
+                    Button(action: applyBold) {
+                        Image(systemName: "bold")
+                        Text("Bold")
+                    }
+                    Button(action: applyItalic) {
+                        Image(systemName: "italic")
+                        Text("Italic")
+                    }
+                    Button(action: saveNote) {
+                        Image(systemName: "square.and.arrow.down")
+                        Text("Save")
+                    }
                 }
-                
-                Button(action: applyHeading) {
-                    Text("Heading")
-                }
-                
-                Button(action: applySubtitle) {
-                    Text("Subtitle")
-                }
+                .padding()
 
-                Button(action: applyBody) {
-                    Text("Body")
-                }
+                Divider()
 
-                Button(action: applyBold) {
-                    Image(systemName: "bold")
-                    Text("Bold")
-                }
-                
-                Button(action: applyItalic) {
-                    Image(systemName: "italic")
-                    Text("Italic")
-                }
-                
-                Button(action: saveNote) {
-                    Image(systemName: "square.and.arrow.down")
-                    Text("Save")
-                }
+                RichTextEditor(text: $note.content)
+                    .frame(maxHeight: .infinity)
             }
             .padding()
-
-            Divider()
-
-            RichTextEditor(text: $note.content)
-                .frame(maxHeight: .infinity)
+            .navigationTitle(note.title)
+            .onAppear {
+                // 註冊通知以監聽標題變更
+                NotificationCenter.default.addObserver(forName: Notification.Name("UpdateTitle"), object: nil, queue: .main) { notification in
+                    if let newTitle = notification.object as? String {
+                        note.title = newTitle
+                    }
+                }
+            }
+            .onDisappear {
+                // 移除通知監聽器
+                NotificationCenter.default.removeObserver(self, name: Notification.Name("UpdateTitle"), object: nil)
+            }
         }
-        .padding()
-        .navigationTitle(note.title)
-    }
+    
 
     // Title 樣式
     func applyTitle() {
@@ -133,15 +140,23 @@ struct NoteDetailView: View {
     func saveNote() {
         if let textView = firstResponderTextView() {
             let savedAttributedString = textView.attributedString()
-            
+
+            // 獲取第一行的範圍
+            let firstLineRange = (textView.string as NSString).lineRange(for: NSRange(location: 0, length: 0))
+            // 獲取第一行的文字內容並更新標題
+            let firstLineText = (textView.string as NSString).substring(with: firstLineRange)
+            note.title = firstLineText.trimmingCharacters(in: .whitespacesAndNewlines) // 去除首尾空白
+
             // 將格式化好的文本保存到 Note 中
             if let index = viewModel.notes.firstIndex(where: { $0.id == note.id }) {
                 viewModel.notes[index].content = savedAttributedString
+                viewModel.notes[index].title = note.title // 確保標題同步更新
                 viewModel.saveNotes()
             }
-            print("Note saved!")
+            print("Note saved with title: \(note.title)")
         }
     }
+
 
     func firstResponderTextView() -> NSTextView? {
         return NSApp.keyWindow?.firstResponder as? NSTextView

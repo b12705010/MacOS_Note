@@ -71,10 +71,22 @@ struct RichTextEditor: NSViewRepresentable {
             self.parent = parent
         }
 
+        // 檢測文本變更
         func textDidChange(_ notification: Notification) {
             if let textView = notification.object as? NSTextView {
                 parent.text = textView.attributedString()
+                
+                // 取得第一行的範圍
+                let firstLineRange = (textView.string as NSString).lineRange(for: NSRange(location: 0, length: 0))
+                
+                // 獲取第一行的文字內容
+                let firstLineText = (textView.string as NSString).substring(with: firstLineRange)
+                
+                // 更新文檔標題
+                NotificationCenter.default.post(name: Notification.Name("UpdateTitle"), object: firstLineText)
             }
         }
     }
+
+
 }
